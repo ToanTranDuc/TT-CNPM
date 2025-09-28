@@ -8,5 +8,4 @@ const connectDb = async () => {
     await mongoose.connect(process.env.MONGODB_URI)
         .then(() => console.log("Connected to Database"));
 }
-
-export default connectDb;
+export { connectDb };
