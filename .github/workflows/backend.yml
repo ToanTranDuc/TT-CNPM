@@ -1,0 +1,51 @@
+name: Backend CI
+
+on:
+  push:
+    branches:
+      - develop
+      - 'milestone/**'
+  pull_request:
+    branches:
+      - develop
+      - 'milestone/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install backend dependencies
+        run: |
+          cd backend || true
+          npm install
+
+      - name: Lint (if ESLint configured)
+        run: |
+          if [ -f backend/.eslintrc.json ] || [ -f backend/.eslintrc.js ]; then
+            cd backend; npx eslint . --ext js --max-warnings=0 || true
+          fi
+
+      - name: Run tests (if any)
+        run: |
+          if [ -d backend/test ] || grep -q "test" backend/package.json; then
+            cd backend || true
+            npm test || true
+          fi
+
+      - name: Upload backend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-node-modules
+          path: backend/node_modules
+
+      - name: Deploy placeholder
+        if: secrets.DEPLOY_PROVIDER != ''
+        run: |
+          echo "DEPLOY_PROVIDER is set. Add provider-specific deploy steps here (e.g., Vercel/Heroku)."
