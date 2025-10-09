@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Admin CI
 
 on:
   push:
@@ -23,22 +23,21 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd frontend
+          cd admin
           npm ci
 
       - name: Build
         run: |
-          cd frontend
+          cd admin
           npm run build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-dist
-          path: frontend/dist
+          name: admin-dist
+          path: admin/dist
 
       - name: Deploy placeholder
         if: ${{ secrets.DEPLOY_PROVIDER != '' }}
         run: |
           echo "DEPLOY_PROVIDER is set. Add provider-specific deploy steps here (e.g., Vercel/Heroku)."
-

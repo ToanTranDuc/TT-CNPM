@@ -46,6 +46,6 @@ jobs:
           path: backend/node_modules
 
       - name: Deploy placeholder
-        if: secrets.DEPLOY_PROVIDER != ''
+        if: ${{ secrets.DEPLOY_PROVIDER != '' }}
         run: |
           echo "DEPLOY_PROVIDER is set. Add provider-specific deploy steps here (e.g., Vercel/Heroku)."
