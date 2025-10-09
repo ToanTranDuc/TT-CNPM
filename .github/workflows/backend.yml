@@ -21,23 +21,17 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install backend dependencies
-        run: |
-          cd backend || true
-          npm install
+      - name: Install dependencies (root package.json manages backend)
+        run: npm install
 
-      - name: Lint (if ESLint configured)
+      - name: Lint backend (if ESLint configured)
         run: |
           if [ -f backend/.eslintrc.json ] || [ -f backend/.eslintrc.js ]; then
-            cd backend; npx eslint . --ext js --max-warnings=0 || true
+            npx eslint backend --ext js --max-warnings=0 || true
           fi
 
-      - name: Run tests (if any)
-        run: |
-          if [ -d backend/test ] || grep -q "test" backend/package.json; then
-            cd backend || true
-            npm test || true
-          fi
+      - name: Run tests
+        run: npm test
 
       - name: Upload backend artifact
         uses: actions/upload-artifact@v4

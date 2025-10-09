@@ -22,14 +22,12 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: |
-          cd admin
-          npm ci
+        working-directory: ./admin
+        run: npm install
 
       - name: Build
-        run: |
-          cd admin
-          npm run build
+        working-directory: ./admin
+        run: npm run build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
